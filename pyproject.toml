@@ -65,3 +65,9 @@ exclude_lines = [
 [tool.hatch.envs.default.scripts]
 publish = "source .env && HATCH_INDEX_USER=__token__ HATCH_INDEX_AUTH=$PYPI_API_TOKEN hatch publish"
 publish-test = "source .env && HATCH_INDEX_USER=__token__ HATCH_INDEX_AUTH=$PYPI_API_TOKEN hatch publish -r test"
+publish-patch = "python scripts/publish.py patch"
+publish-minor = "python scripts/publish.py minor"
+publish-major = "python scripts/publish.py major"
+version-patch = "python scripts/version.py patch"
+version-minor = "python scripts/version.py minor"
+version-major = "python scripts/version.py major"
