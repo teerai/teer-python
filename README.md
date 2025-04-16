@@ -26,12 +26,6 @@ from teer import TeerClient
 # Initialize with your API key
 client = TeerClient("YOUR_API_KEY")
 
-# Or initialize with a custom base URL (e.g., for development or enterprise deployments)
-client = TeerClient(
-    api_key="YOUR_API_KEY",
-    base_url="https://dev-track.teer.ai"
-)
-
 # Send usage data
 client.ingest.send({
     "provider": "anthropic",
