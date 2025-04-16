@@ -23,6 +23,7 @@ classifiers = [
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
+  "Typing :: Typed",
 ]
 dependencies = [
   "requests>=2.25.0",
@@ -35,6 +36,23 @@ Source = "https://github.com/Shane Rogers/teer-python"
 
 [tool.hatch.version]
 path = "src/teer/__about__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/teer"]
+
+[tool.hatch.build.targets.wheel.sources]
+"src/teer" = "teer"
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "src/teer",
+  "LICENSE.txt",
+  "README.md",
+  "pyproject.toml",
+]
+
+[tool.hatch.build.targets.wheel.shared-data]
+"src/teer/py.typed" = "teer/py.typed"
 
 [tool.hatch.envs.types]
 extra-dependencies = [

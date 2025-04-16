@@ -2,8 +2,11 @@
 #
 # SPDX-License-Identifier: MIT
 
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, TYPE_CHECKING
 import logging
+
+if TYPE_CHECKING:
+    from .. import TeerClient
 
 logger = logging.getLogger("teer")
 
@@ -11,7 +14,7 @@ logger = logging.getLogger("teer")
 class BaseResource:
     """Base class for all Teer API resources."""
 
-    def __init__(self, client, resource_path: str):
+    def __init__(self, client: "TeerClient", resource_path: str):
         """
         Initialize the base resource.
 

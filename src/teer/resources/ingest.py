@@ -2,8 +2,11 @@
 #
 # SPDX-License-Identifier: MIT
 
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, TYPE_CHECKING
 from .base import BaseResource
+
+if TYPE_CHECKING:
+    from .. import TeerClient
 
 
 class Ingest(BaseResource):
@@ -13,7 +16,7 @@ class Ingest(BaseResource):
     This resource is used to send LLM usage data and other metrics to Teer.
     """
 
-    def __init__(self, client):
+    def __init__(self, client: "TeerClient"):
         """
         Initialize the Ingest resource.
 

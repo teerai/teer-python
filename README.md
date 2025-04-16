@@ -26,6 +26,12 @@ from teer import TeerClient
 # Initialize with your API key
 client = TeerClient("YOUR_API_KEY")
 
+# Or initialize with a custom base URL (e.g., for development or enterprise deployments)
+client = TeerClient(
+    api_key="YOUR_API_KEY",
+    base_url="https://dev-track.teer.ai"
+)
+
 # Send usage data
 client.ingest.send({
     "provider": "anthropic",
@@ -43,6 +49,7 @@ client.ingest.send({
 Check out the [examples](./examples) directory for more usage examples:
 
 - [Basic Usage](./examples/basic_usage.py): Simple example of using the Teer client
+- [Custom Base URL](./examples/custom_base_url.py): Example of initializing the Teer client with a custom base URL
 - [Usage Payload Example](./examples/usage_payload_example.py): Example of creating a payload for the Teer ingest API
 
 ## License
