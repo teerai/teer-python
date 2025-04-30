@@ -209,8 +209,8 @@ response = client.ingest.send(
 print("\n\nUsage Reports with Billing Information")
 print("------------------------------------")
 
-# Example 8: Usage report with billing information
-print("\nExample 8: Usage report with billing information")
+# Example 8: Usage report with billing information (single meter)
+print("\nExample 8: Usage report with billing information (single meter)")
 response = client.ingest.send(
     {
         "provider": "openai",
@@ -228,7 +228,46 @@ response = client.ingest.send(
             "provider": "stripe",
             "fields": {
                 # Customer ID in the billing system
-                "customer": "cus_1234567890"
+                "customer": "cus_1234567890",
+                # Optional customer email
+                "email": "customer@example.com",
+                # Single meter ID
+                "meter": "meter_premium_abc",
+            },
+        },
+        "metadata": {"project_id": "proj-987654", "cost_center": "cc-finance-01"},
+        "trace_id": "trace-yzabcd",
+        "span_id": "span-567890",
+    }
+)
+
+# Example 8.1: Usage report with billing information (multiple meters)
+print("\nExample 8.1: Usage report with billing information (multiple meters)")
+response = client.ingest.send(
+    {
+        "provider": "openai",
+        "model": "gpt-4-turbo",
+        "function_id": "data-analysis",
+        "usage": {"input": 1500, "output": 3500},
+        # Teer-specific platform information
+        "platform": {
+            # ID of the rate card to use for billing
+            "rate_card_id": "rate-card-premium"
+        },
+        # Billing information
+        "billing": {
+            # Billing provider (defaults to 'stripe')
+            "provider": "stripe",
+            "fields": {
+                # Customer ID in the billing system
+                "customer": "cus_1234567890",
+                # Optional customer email
+                "email": "customer@example.com",
+                # Multiple meters with different IDs
+                "meters": {
+                    "input": "input_meter_id",
+                    "outout": "meter_viz_xyz",
+                },
             },
         },
         "metadata": {"project_id": "proj-987654", "cost_center": "cc-finance-01"},
@@ -266,7 +305,19 @@ response = client.ingest.send(
         # Platform information
         "platform": {"rate_card_id": "rate-card-enterprise"},
         # Billing information
-        "billing": {"provider": "stripe", "fields": {"customer": "cus_enterprise_abc"}},
+        "billing": {
+            "provider": "stripe",
+            "fields": {
+                "customer": "cus_enterprise_abc",
+                "email": "enterprise@example.com",
+                "meters": {
+                    "input": "input_meter_id",
+                    "output": "output_meter_id",
+                    "cache_creation_input_tokens": "cache_creation_input_meter_id",
+                    "cache_read_input_tokens": "cache_read_input_meter_id",
+                },
+            },
+        },
         # Metadata for attribution and analytics
         "metadata": {
             # User information

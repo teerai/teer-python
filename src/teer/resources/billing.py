@@ -2,15 +2,65 @@
 #
 # SPDX-License-Identifier: MIT
 
-from typing import Dict, Any, Optional, Union, TypedDict, Literal, TYPE_CHECKING
+from typing import (
+    Dict,
+    Any,
+    Optional,
+    Union,
+    TypedDict,
+    Literal,
+    TYPE_CHECKING,
+    NotRequired,
+)
 from .base import BaseResource
 
 if TYPE_CHECKING:
     from .. import TeerClient
 
 
+# Billing provider type
+BillingProvider = Literal["stripe"]
+
+
+# Common billing fields without the meter/meters
+class BillingFieldsBase(TypedDict):
+    """Base interface for billing fields"""
+
+    customer: str
+    email: NotRequired[str]
+
+
+# Single meter option
+class SingleMeterFields(BillingFieldsBase):
+    """Billing fields with a single meter"""
+
+    meter: str
+
+
+# Multiple meters option
+class MultiMeterFields(BillingFieldsBase):
+    """Billing fields with multiple meters"""
+
+    meters: Dict[str, str]
+
+
+# Union type that allows either single meter or multiple meters
+BillingFields = Union[SingleMeterFields, MultiMeterFields]
+
+
+class TeerBillingConfig(TypedDict):
+    """Configuration for Teer billing"""
+
+    provider: BillingProvider
+    fields: BillingFields
+
+
+# Meter Events
+
+
 class MeterEventFieldsBase(TypedDict):
     """Base interface for meter event fields"""
+
     event_name: str
     identifier: Optional[str]
     timestamp: Optional[str]
@@ -18,18 +68,21 @@ class MeterEventFieldsBase(TypedDict):
 
 class StripePayload(TypedDict):
     """Payload data for the Stripe event"""
+
     stripe_customer_id: str
     value: str
 
 
 class StripeMeterEventFields(MeterEventFieldsBase):
     """Stripe-specific meter event fields"""
+
     payload: StripePayload
 
 
 class StripeMeterEventCreateParams(TypedDict):
     """Parameters for creating a meter event with Stripe provider"""
-    provider: Literal['stripe']
+
+    provider: Literal["stripe"]
     fields: StripeMeterEventFields
 
 
@@ -40,6 +93,7 @@ MeterEventCreateParams = StripeMeterEventCreateParams
 
 class MeterEvent(TypedDict):
     """Response type for meter events"""
+
     id: str
     event_name: str
     timestamp: str
@@ -81,12 +135,7 @@ class MeterEventsResource(BaseResource):
         Raises:
             Exception: If the request fails.
         """
-        return self._request(
-            "POST", 
-            data=params, 
-            headers=headers, 
-            timeout=timeout
-        )
+        return self._request("POST", data=params, headers=headers, timeout=timeout)
 
 
 class BillingResource(BaseResource):

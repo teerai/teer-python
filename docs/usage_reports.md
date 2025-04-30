@@ -74,13 +74,27 @@ The `billing` object contains billing information:
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | `provider` | string | Yes | The billing provider. Currently only `"stripe"` is supported. |
-| `fields` | object | Yes | Billing provider-specific fields. |
+| `fields` | object | Yes | Billing provider-specific fields. See [Billing Fields Object](#billing-fields-object) for details. |
 
 #### Billing Fields Object
+
+The billing fields object can be configured in two ways:
+
+1. With a single meter:
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | `customer` | string | Yes | The customer ID in the billing system. |
+| `email` | string | No | The customer's email address. |
+| `meter` | string | Yes | The meter ID to use for billing. |
+
+2. With multiple meters:
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `customer` | string | Yes | The customer ID in the billing system. |
+| `email` | string | No | The customer's email address. |
+| `meters` | object | Yes | A mapping of meter names to meter IDs. |
 
 ### Metadata Object
 
@@ -165,7 +179,7 @@ client.ingest.send({
 })
 ```
 
-### Complete Usage Report
+### Complete Usage Report with Single Meter
 
 ```python
 client.ingest.send({
@@ -188,7 +202,50 @@ client.ingest.send({
     "billing": {
         "provider": "stripe",
         "fields": {
-            "customer": "cus_enterprise_abc"
+            "customer": "cus_enterprise_abc",
+            "email": "enterprise@example.com",
+            "meter": "meter_abc123"
+        }
+    },
+    "metadata": {
+        "user_id": "user-admin-456",
+        "organization_id": "org-enterprise-789",
+        "session_id": "session-long-running-xyz"
+    },
+    "trace_id": "trace-complete-example",
+    "span_id": "span-main-operation"
+})
+```
+
+### Complete Usage Report with Multiple Meters
+
+```python
+client.ingest.send({
+    "provider": "anthropic",
+    "model": "claude-3-haiku-20240307",
+    "function_id": "enterprise-analysis",
+    "usage": {
+        "input": 5000,
+        "output": 8000,
+        "cache": {
+            "anthropic": {
+                "cache_creation_input_tokens": 3000,
+                "cache_read_input_tokens": 2000
+            }
+        }
+    },
+    "platform": {
+        "rate_card_id": "rate-card-enterprise"
+    },
+    "billing": {
+        "provider": "stripe",
+        "fields": {
+            "customer": "cus_enterprise_abc",
+            "email": "enterprise@example.com",
+            "meters": {
+                "input": "meter_search_abc",
+                "output": "meter_generation_xyz"
+            }
         }
     },
     "metadata": {
