@@ -184,3 +184,12 @@ Detailed documentation is available in the [docs](./docs) directory:
 ## License
 
 `teer` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
+
+## Publishing
+```
+python scripts/publish.py patch
+
+python scripts/publish.py minor
+
+python scripts/publish.py major
+```
