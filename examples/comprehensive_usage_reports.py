@@ -95,7 +95,7 @@ print("\nExample 4: Anthropic usage report with cache information")
 response = client.ingest.send(
     {
         "provider": "anthropic",
-        "model": "claude-3-opus-20240229",
+        "model": "claude-3-haiku-20240307",
         "function_id": "legal-document-analysis",
         "usage": {
             "input": 2000,
@@ -289,7 +289,7 @@ response = client.ingest.send(
     {
         # Provider information
         "provider": "anthropic",
-        "model": "claude-3-opus-20240229",
+        "model": "claude-3-haiku-20240307",
         "function_id": "enterprise-analysis",
         # Usage information
         "usage": {

@@ -71,7 +71,7 @@ Teer supports detailed usage reports for different LLM providers. Here are some 
 ```python
 client.ingest.send({
     "provider": "anthropic",
-    "model": "claude-3-opus-20240229",
+    "model": "claude-3-haiku-20240307",
     "function_id": "legal-document-analysis",
     "usage": {
         "input": 2000,
