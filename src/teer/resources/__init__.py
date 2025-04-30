@@ -3,5 +3,6 @@
 # SPDX-License-Identifier: MIT
 
 from .ingest import Ingest
+from .billing import BillingResource
 
-__all__ = ["Ingest"]
+__all__ = ["Ingest", "BillingResource"]

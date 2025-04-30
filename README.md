@@ -10,6 +10,7 @@ The official Python SDK for [Teer](https://teer.ai), a platform for tracking and
 - [Installation](#installation)
 - [Usage](#usage)
 - [Usage Reports](#usage-reports)
+- [Billing](#billing)
 - [Examples](#examples)
 - [Documentation](#documentation)
 - [License](#license)
@@ -133,6 +134,37 @@ client.ingest.send({
 
 For a complete reference of all supported fields in usage reports, see the [Usage Reports documentation](./docs/usage_reports.md).
 
+## Billing
+
+Teer provides a billing resource for usage-based billing integration with providers like Stripe.
+
+### Creating Meter Events
+
+```python
+from teer import TeerClient
+from datetime import datetime, UTC
+
+# Initialize the client with your API key
+client = TeerClient("YOUR_API_KEY")
+
+# Get the current timestamp in ISO 8601 format using timezone-aware approach
+current_timestamp = datetime.now(UTC).isoformat()
+
+# Create a meter event
+meter_event = client.billing.meter_events.create({
+    "provider": "stripe",
+    "fields": {
+        "identifier": "idmp_12345678",
+        "event_name": "ai_search_api",
+        "timestamp": current_timestamp,
+        "payload": {
+            "stripe_customer_id": "cus_12345678",
+            "value": "25",
+        },
+    },
+})
+```
+
 ## Examples
 
 Check out the [examples](./examples) directory for more usage examples:
@@ -141,6 +173,7 @@ Check out the [examples](./examples) directory for more usage examples:
 - [Custom Base URL](./examples/custom_base_url.py): Example of initializing the Teer client with a custom base URL
 - [Comprehensive Usage Reports](./examples/comprehensive_usage_reports.py): Detailed examples of various usage report scenarios
 - [Usage Payload Example](./examples/usage_payload_example.py): Example of creating a payload for the Teer ingest API
+- [Billing Meter Events](./examples/billing_meter_events.py): Example of creating meter events for usage-based billing
 
 ## Documentation
 

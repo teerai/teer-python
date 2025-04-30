@@ -6,7 +6,7 @@ import os
 from typing import Optional, Dict, Any
 
 from .http import HttpClient
-from .resources import Ingest
+from .resources import Ingest, BillingResource
 
 # Default API key environment variable name
 TEER_API_KEY_ENV = "TEER_SECRET_API_KEY"
@@ -71,6 +71,7 @@ class TeerClient:
 
         # Initialize resources
         self.ingest = Ingest(self)
+        self.billing = BillingResource(self)
 
     @property
     def api_base(self) -> str:
