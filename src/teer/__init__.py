@@ -7,6 +7,17 @@ from typing import Optional, Dict, Any
 
 from .http import HttpClient
 from .resources import Ingest, BillingResource
+from .types import (
+    AnthropicCache,
+    OpenAICache,
+    GoogleCache,
+    CacheObject,
+    UsageObject,
+    IngestPayload,
+    Provider,
+    MetadataObject,
+    PlatformObject,
+)
 
 # Default API key environment variable name
 TEER_API_KEY_ENV = "TEER_SECRET_API_KEY"
@@ -82,4 +93,16 @@ class TeerClient:
 # For backwards compatibility with the old API
 Teer = TeerClient
 
-__all__ = ["TeerClient", "Teer"]
+__all__ = [
+    "TeerClient",
+    "Teer",
+    "AnthropicCache",
+    "OpenAICache",
+    "GoogleCache",
+    "CacheObject",
+    "UsageObject",
+    "IngestPayload",
+    "Provider",
+    "MetadataObject",
+    "PlatformObject",
+]

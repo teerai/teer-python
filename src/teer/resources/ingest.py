@@ -4,6 +4,7 @@
 
 from typing import Dict, Any, Optional, TYPE_CHECKING
 from .base import BaseResource
+from ..types import IngestPayload
 
 if TYPE_CHECKING:
     from .. import TeerClient
@@ -27,7 +28,7 @@ class Ingest(BaseResource):
 
     def send(
         self,
-        payload: Dict[str, Any],
+        payload: IngestPayload,
         headers: Optional[Dict[str, str]] = None,
         timeout: Optional[int] = 10,
     ) -> Dict[str, Any]:
@@ -36,6 +37,7 @@ class Ingest(BaseResource):
 
         Args:
             payload: The data to send. Should include provider, model, function_id, and usage.
+                     See the IngestPayload type for details on the expected structure.
             headers: Additional headers to include in the request.
             timeout: Request timeout in seconds. Defaults to 10 seconds.
 
