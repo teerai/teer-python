@@ -4,6 +4,7 @@
 
 from typing import Dict, Any, Optional, TYPE_CHECKING
 import logging
+import requests
 
 if TYPE_CHECKING:
     from .. import TeerClient
@@ -62,32 +63,49 @@ class BaseResource:
         # Calculate the full path relative to the resource base URL
         resource_path = path.lstrip("/") if path else ""
 
-        # Extract the resource-specific part of the URL
-        # e.g., if base_url is "https://track.teer.ai/v1/ingest",
-        # we want to extract "ingest" to append to the path
-        resource_name = self.base_url.split("/")[-1]
+        # Construct the full URL for the request using the resource's base URL
+        # This ensures we use the correct base URL (api or track) for each resource
+        full_url = f"{self.base_url}/{resource_path}".rstrip("/")
+        if resource_path:
+            full_url = f"{self.base_url}/{resource_path}"
+        else:
+            full_url = self.base_url
 
-        # Construct the full path for the HTTP client
-        # The HTTP client's base URL is already set to the API base (e.g., "https://track.teer.ai/v1")
-        full_path = f"{resource_name}/{resource_path}".rstrip("/")
-        if not full_path:
-            full_path = resource_name
-
-        logger.debug(f"Making {method} request to {full_path}")
+        logger.debug(f"Making {method} request to {full_url}")
         if data:
             logger.debug(f"Request data: {data}")
 
-        # Use the shared HTTP client to make the request
+        # Make the request directly using the requests library
+        # This bypasses the HTTP client's base URL and uses the resource's base URL
         try:
-            return self.client.http_client.request(
+            # Ensure we always have the Authorization and Content-Type headers
+            request_headers = {
+                "Authorization": f"Bearer {self.client.api_key}",
+                "Content-Type": "application/json",
+            }
+
+            # Add any additional headers
+            if headers:
+                request_headers.update(headers)
+
+            response = requests.request(
                 method=method,
-                path=full_path,
+                url=full_url,
                 params=params,
-                data=data,
-                headers=headers,
+                json=data,
+                headers=request_headers,
                 timeout=timeout,
             )
+            response.raise_for_status()
+
+            # Try to parse the response as JSON
+            try:
+                return response.json()
+            except ValueError:
+                # If the response is not JSON, return the text
+                return {"text": response.text}
+
         except Exception as e:
-            logger.error(f"Error making request to {full_path}: {str(e)}")
+            logger.error(f"Error making request to {full_url}: {str(e)}")
             # Re-raise the exception for the caller to handle
             raise
