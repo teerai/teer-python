@@ -66,7 +66,9 @@ client.ingest.send({
 
 Teer supports detailed usage reports for different LLM providers. Here are some examples of more advanced usage reports:
 
-### Usage Report with Cache Information
+### Usage Reports with Cache Information
+
+#### Anthropic Cache
 
 ```python
 client.ingest.send({
@@ -83,6 +85,50 @@ client.ingest.send({
                 "cache_creation_input_tokens": 1500,
                 # Tokens read from the cache
                 "cache_read_input_tokens": 500
+            }
+        }
+    }
+})
+```
+
+#### OpenAI Cache
+
+```python
+client.ingest.send({
+    "provider": "openai",
+    "model": "gpt-4o",
+    "function_id": "code-generation",
+    "usage": {
+        "input": 800,
+        "output": 2500,
+        # OpenAI-specific cache information
+        "cache": {
+            "openai": {
+                # Tokens retrieved from cache
+                "input_cached_tokens": 300
+            }
+        }
+    }
+})
+```
+
+#### Google Cache
+
+```python
+client.ingest.send({
+    "provider": "google",
+    "model": "gemini-ultra",
+    "function_id": "image-analysis",
+    "usage": {
+        "input": 1200,
+        "output": 1800,
+        # Google-specific cache information
+        "cache": {
+            "google": {
+                # Tokens retrieved from cache
+                "cached_content_token_count": 800,
+                # Tokens used for thoughts
+                "thoughts_token_count": 400
             }
         }
     }

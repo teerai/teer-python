@@ -14,16 +14,24 @@ logger = logging.getLogger("teer")
 class BaseResource:
     """Base class for all Teer API resources."""
 
-    def __init__(self, client: "TeerClient", resource_path: str):
+    def __init__(
+        self,
+        client: "TeerClient",
+        resource_path: str,
+        resource_base_url: Optional[str] = None,
+    ):
         """
         Initialize the base resource.
 
         Args:
             client: The Teer client instance.
             resource_path: The path to the resource, e.g., "ingest".
+            resource_base_url: Optional base URL for this resource. If not provided,
+                              defaults to the client's api_base.
         """
         self.client = client
-        self.base_url = f"{client.api_base}/{resource_path}"
+        base_url = resource_base_url or client.api_base
+        self.base_url = f"{base_url}/{resource_path}"
 
     def _request(
         self,

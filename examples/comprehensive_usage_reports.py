@@ -155,7 +155,9 @@ response = client.ingest.send(
             "cache": {
                 "google": {
                     # Tokens retrieved from cache
-                    "cached_content_token_count": 800
+                    "cached_content_token_count": 800,
+                    # Tokens used for thoughts
+                    "thoughts_token_count": 400,
                 }
             },
         },

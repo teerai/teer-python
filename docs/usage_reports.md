@@ -58,6 +58,7 @@ The `cache` object contains provider-specific cache information:
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | `cached_content_token_count` | number | No | The number of tokens retrieved from cache. |
+| `thoughts_token_count` | number | No | The number of tokens used for thoughts. |
 
 ### Platform Object
 
@@ -140,7 +141,9 @@ client.ingest.send({
 })
 ```
 
-### Usage Report with Cache Information
+### Usage Reports with Cache Information
+
+#### Anthropic Cache Example
 
 ```python
 client.ingest.send({
@@ -154,6 +157,45 @@ client.ingest.send({
             "anthropic": {
                 "cache_creation_input_tokens": 1500,
                 "cache_read_input_tokens": 500
+            }
+        }
+    }
+})
+```
+
+#### OpenAI Cache Example
+
+```python
+client.ingest.send({
+    "provider": "openai",
+    "model": "gpt-4o",
+    "function_id": "code-generation",
+    "usage": {
+        "input": 800,
+        "output": 2500,
+        "cache": {
+            "openai": {
+                "input_cached_tokens": 300
+            }
+        }
+    }
+})
+```
+
+#### Google Cache Example
+
+```python
+client.ingest.send({
+    "provider": "google",
+    "model": "gemini-ultra",
+    "function_id": "image-analysis",
+    "usage": {
+        "input": 1200,
+        "output": 1800,
+        "cache": {
+            "google": {
+                "cached_content_token_count": 800,
+                "thoughts_token_count": 400
             }
         }
     }
