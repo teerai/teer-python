@@ -113,7 +113,7 @@ class MeterEventsResource(BaseResource):
         Args:
             client: The Teer client instance.
         """
-        super().__init__(client, "billing/meter-events")
+        super().__init__(client, "billing/meter-events", client.track_base)
 
     def create(
         self,
@@ -148,5 +148,5 @@ class BillingResource(BaseResource):
         Args:
             client: The Teer client instance.
         """
-        super().__init__(client, "billing")
+        super().__init__(client, "billing", client.track_base)
         self.meter_events = MeterEventsResource(client)

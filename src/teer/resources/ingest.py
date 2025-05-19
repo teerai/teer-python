@@ -24,7 +24,7 @@ class Ingest(BaseResource):
         Args:
             client: The Teer client instance.
         """
-        super().__init__(client, "ingest")
+        super().__init__(client, "ingest", client.track_base)
 
     def send(
         self,
