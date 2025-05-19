@@ -31,10 +31,10 @@ from teer import TeerClient
 # Initialize with your API key
 client = TeerClient("YOUR_API_KEY")
 
-# Or initialize with a custom base URL (e.g., for development or enterprise deployments)
+# Or initialize with a custom base URL if you need
 client = TeerClient(
     api_key="YOUR_API_KEY",
-    base_url="https://dev-track.teer.ai"
+    base_url="https://proxy-url.com"
 )
 ```
 
